@@ -17,15 +17,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private int playerSpeed=10;
     [SerializeField]private int playerJumpForce=20;
     [SerializeField]private LayerMask ground;
-    [SerializeField]private int gems =0;
-    [SerializeField]private Text gemText ;
     [SerializeField]private float hurtForce = 10f;
     [SerializeField]private AudioSource gemSound;   
     [SerializeField]private AudioSource footStep;
     [SerializeField]private AudioSource jump;
     [SerializeField]private AudioSource powerUpSound;
-    [SerializeField]private int Health;
-    [SerializeField]private Text HealthAmount ; //Can Miktarı
 
 
     // Start is called before the first frame update
@@ -34,7 +30,7 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         coll = GetComponent<Collider2D>();
-        HealthAmount.text = Health.ToString();
+        PermanentUI.perm.HealthAmount.text = PermanentUI.perm.Health.ToString();
         
     }
 
@@ -43,43 +39,31 @@ public class PlayerController : MonoBehaviour
     {
         if (state != State.hurt)
         {
-             Movment();
+            Movment();
             
         }   
-       
+        
         AnimationState();
         anim.SetInteger("State", (int)state);
+
+    
     }
 
     private void Movment()
     {
         float hDirection = Input.GetAxis("Horizontal");
 
-        if (/*Input.GetKey(KeyCode.A)*/ hDirection < 0)
+        if (hDirection < 0)
         {
             rb.velocity = new Vector2(-playerSpeed, rb.velocity.y);
             transform.localScale = new Vector2(-1, 1);
-            // state = State.running;
-            // transform.localScale = new Vector3(-1,1,this.gameObject.transform.position.z+2);
-            //transform.position = new Vector3(player.position.x,player.position.y,transform.position.z-10);
-            // GetComponent<Animator>();
-            // anim.SetBool("Run",true);
         }
-        else if (/*Input.GetKey(KeyCode.D)*/ hDirection > 0)
+        else if (hDirection > 0)
         {
             rb.velocity = new Vector2(playerSpeed * 1, rb.velocity.y);
             transform.localScale = new Vector2(1, 1);
-            // state = State.running;
-            // transform.localScale = new Vector3(1,1,this.gameObject.transform.position.z+2);
-            // anim.SetBool("Run",true);
-
         }
-        // else
-        // {
-        //     // anim.SetBool("Run",false);
-        //     state = State.idle;
-        // }
-        if (/*Input.GetKeyDown(KeyCode.Space)*/ Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
+        if ( Input.GetButtonDown("Jump") && coll.IsTouchingLayers(ground))
         {
             Jump();
         }
@@ -144,16 +128,16 @@ public class PlayerController : MonoBehaviour
         {
             gemSound.Play();
            Destroy(other.gameObject); 
-           gems++;
-           print(gems);
-           gemText.text = gems.ToString();
-           if (gems>=15&&gems<25)
+           PermanentUI.perm.gems++;
+           print(PermanentUI.perm.gems);
+           PermanentUI.perm.gemText.text = PermanentUI.perm.gems.ToString();
+           if (PermanentUI.perm.gems>=15&&PermanentUI.perm.gems<25)
            {
-               gemText.color = Color.yellow;
+               PermanentUI.perm.gemText.color = Color.yellow;
            }
-           else if (gems>=25)
+           else if (PermanentUI.perm.gems>=25)
            {
-               gemText.color = Color.green;
+               PermanentUI.perm.gemText.color = Color.green;
            }
            
         }
@@ -176,8 +160,7 @@ public class PlayerController : MonoBehaviour
             Enemy enemy = other.gameObject.GetComponent<Enemy>();
             if (state == State.falling)
             {
-                // Destroy(other.gameObject);
-                // print("Dusman oldu");
+                
                 enemy.JumpedOn();
                 Jump();
                 
@@ -186,13 +169,13 @@ public class PlayerController : MonoBehaviour
             {
                 state = State.hurt;
                 HandleHealth();
-                //düşman sağımda ise
+            
                 if (other.gameObject.transform.position.x > transform.position.x)
                 {
-                    //sola doğru hareket etmem lazım
+             
                     rb.velocity = new Vector2(-hurtForce, rb.velocity.y);
                 }
-                else //otomatik olarak burasıda düşmanın sağda olduğu durum
+                else 
                 {
                     rb.velocity = new Vector2(hurtForce, rb.velocity.y);
                 }
@@ -203,9 +186,9 @@ public class PlayerController : MonoBehaviour
 
     private void HandleHealth()
     {
-        Health--;
-        HealthAmount.text = Health.ToString();
-        if (Health <= 0)
+        PermanentUI.perm.Health--;
+        PermanentUI.perm.HealthAmount.text = PermanentUI.perm.Health.ToString();
+        if (PermanentUI.perm.Health <= 0)
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }

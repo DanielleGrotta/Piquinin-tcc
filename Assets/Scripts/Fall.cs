@@ -11,6 +11,7 @@ public class Fall : MonoBehaviour
         if (other.gameObject.tag == "Player")
         {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            PermanentUI.perm.Reset();
         }
     }
 }
