@@ -5,13 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
     public static bool GameIsPause = false;
     public GameObject PauseMenuUI;
-    public GameObject PlayerUI;
 
 
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -30,13 +27,11 @@ public class PauseMenu : MonoBehaviour
 
     public void Resume(){
         PauseMenuUI.SetActive(false);
-        PlayerUI.SetActive(true);
         Time.timeScale = 1f;
         GameIsPause = false;
     }
 
     void Pause(){
-        PlayerUI.SetActive(false);
         PauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         GameIsPause = true;

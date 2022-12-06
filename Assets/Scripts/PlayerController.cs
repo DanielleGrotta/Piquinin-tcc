@@ -22,9 +22,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private AudioSource footStep;
     [SerializeField]private AudioSource jump;
     [SerializeField]private AudioSource powerUpSound;
+    public string sceneName = "GameOver";
 
 
-    // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
         
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (state != State.hurt)
@@ -190,7 +189,8 @@ public class PlayerController : MonoBehaviour
         PermanentUI.perm.HealthAmount.text = PermanentUI.perm.Health.ToString();
         if (PermanentUI.perm.Health <= 0)
         {
-            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            SceneManager.LoadScene(sceneName);
+            PermanentUI.perm.Reset();
         }
     }
 
