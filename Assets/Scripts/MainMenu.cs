@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public void PlayGame(){
+        SceneManager.LoadScene("CutScene");
+        Time.timeScale = 1f;
+        PauseMenu.GameIsPause = false;
+    }
+    public void PlayGameCut(){
         SceneManager.LoadScene("SampleScene");
         Time.timeScale = 1f;
         PauseMenu.GameIsPause = false;
